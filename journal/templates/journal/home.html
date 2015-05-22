@@ -1,0 +1,32 @@
+{% extends 'journal/base.html' %}
+
+
+
+{% block title %}
+    {{ TeacherName }}
+{% endblock %}
+
+{% block main_menu %}
+    <ul class="nav nav-sidebar">
+    <li>Мои классы:</li>
+        {% for class in classes %}
+            <li><a href="{% url 'journal:class_journal' class.id %}">{{ class.name}}</a> </li>
+        {% endfor %}
+    </ul>
+    {% if class_teacher %}
+       <ul class="nav nav-sidebar">
+       <li>Класс. рук</li>
+        <li><a href="{% url 'journal:my_class' class_teacher.id %}">{{ class_teacher.name }}</a> </li>
+       </ul>
+    {% endif %}
+{% endblock %}
+
+{% block page_header %}
+    {{ TeacherName }}
+{% endblock %}
+
+
+{% block main_content_up %}
+
+{% endblock %}
+

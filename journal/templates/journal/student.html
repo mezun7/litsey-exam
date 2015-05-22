@@ -1,0 +1,73 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}
+    {{ student }}
+{% endblock %}
+
+
+{% block page_header %}
+    {{ student }}
+{% endblock %}
+
+{% block main_menu%}
+    <ul class="nav nav-sidebar">
+                <li><a href="{% url 'journal:raiting' %}">&#1056;&#1077;&#1081;&#1090;&#1080;&#1085;&#1075;</a></li>
+              </ul>
+{% endblock %}
+{% block main_content_up %}
+                <div class="row placeholders">
+                <div class="col-xs-6 col-sm-3">
+                    <img src="/media/{{ student.photo }}" class="img-thumbnail" alt="User avatar">
+                    <h4><span class="text-info">&#1050;&#1083;&#1072;&#1089;&#1089;: {{ student.class_name }}</span></h4>
+                </div>
+                <div class="col-xs-6 col-sm-9 placeholder">
+
+                        <h3>&#1059;&#1089;&#1087;&#1077;&#1074;&#1072;&#1077;&#1084;&#1086;&#1089;&#1090;&#1100; &#1079;&#1072; &#1087;&#1077;&#1088;&#1080;&#1086;&#1076;</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">&#1055;&#1088;&#1077;&#1076;&#1084;&#1077;&#1090;</th>
+                                    {% for i in maxx %}
+                                        <th></th>
+                                    {% endfor %}
+                                     <th class="text-center">AVG</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in list %}
+                                <tr>
+                                  <td><font size="4"><b>{{ i.subject }}</b></font></td>
+                                  {% for mark in i.marks %}
+                                    <td><font size="4">{{ mark|floatformat:2 }}</font></td>
+                                  {% endfor %}
+                                  {% for i in i.iter %}
+                                    <td></td>
+                                  {% endfor %}
+                                  <td><font size="4"><b>{{ i.avg|floatformat:2 }}</b></font></td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+{#                            <table class="table table-striped">#}
+{#                                <tbody>#}
+{#                                <tr>#}
+{#                                    <td>&#1064;&#1082;&#1086;&#1083;&#1072;:</td>#}
+{#                                    <td>{{ student.school }}</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>&#1050;&#1083;&#1072;&#1089;&#1089;:</td>#}
+{#                                    <td>{{ student.class_name }}</td>#}
+{#                                </tr>#}
+{#                                </tbody>#}
+{#                            </table>#}
+                    </div>
+                </div>
+
+            </div>
+{% endblock %}
+
+{% block main_content_down %}
+
+
+{% endblock %}
