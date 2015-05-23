@@ -7,7 +7,7 @@ urlpatterns = patterns('journal.views',
     # url(r'^$', 'tosterproject.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$','home', name='home'),
+    url(r'^$', 'home', name='home'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', 'log_out', name='logout'),
     url(r'^class/(?P<class_id>\d+)/$', 'class_journal', name='class_journal'),

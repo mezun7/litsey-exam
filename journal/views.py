@@ -1,12 +1,12 @@
-import datetime
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+
 
 # Create your views here.
-from django.shortcuts import render_to_response
+import datetime
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, render
 from django.views.generic import View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormMixin
@@ -60,6 +60,10 @@ def home(request):
     class_teacher = Class.objects.filter(class1_teacher=teachers[0])
     #context['class_teacher'] = class_teacher[0]
     return render(request, 'journal/home.html', context)
+
+def class_list(request, class_id):
+    students = Student.objects.filter(class_name=class_id)
+    return render(request, 'journal/class_list.html', {'students': students})
 
 def class_journal(request, class_id):
     form = AddMarkForm(Class.objects.get(pk=class_id), request.POST)
@@ -140,15 +144,11 @@ class LoginView(View,TemplateResponseMixin,FormMixin):
         return self.get(self.request)
 
 def student_profile(request, student_id):
-    student = Student.objects.get(pk = student_id)
+    student = Student.objects.get(pk=student_id)
     teacher = Teacher.objects.all()
-    #teachers = teacher.filter(user = request.user)
     classes = Class.objects.all()
-    #print test2[0].id
-   # classes = classes
-    #class_teacher = Class.objects.filter(class1_teacher=teachers[0])
-    #class_teacher = class_teacher[0]
-    marks =  student.mark_set.all()
+    marks = student.mark_set.all()
+    class_teacher = student.class_name.class1_teacher
     list = []
     context = {}
     for mark in marks:
@@ -167,7 +167,7 @@ def student_profile(request, student_id):
         i.delta(maxx)
     print list
     list.sort(key=lambda x:x.avg, reverse=True)
-    return render(request, 'journal/student.html', {'student': student, 'classes': classes, 'list':list, 'maxx':range(maxx)})
+    return render(request, 'journal/student.html', {'student': student, 'classes': classes, 'list':list, 'maxx':range(maxx), 'class_teacher':class_teacher})
 
 def raiting(request):
     students = Student.objects.all()
