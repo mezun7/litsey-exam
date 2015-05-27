@@ -61,11 +61,16 @@ class StudentsRaitingStruct:
             mark = avg
         for i in lst:
             avg_overall += i
-        avg_overall /= len(lst)
+        if (len(lst) != 0):
+            avg_overall /= len(lst)
+        else:
+            avg_overall = 0.0
         self.avg = avg_overall
         self.marks = lst
+
     def setNum(self, num):
         self.num = num
+
     def __unicode__(self):
         return self.student
 
@@ -92,8 +97,10 @@ class StudentsRaitingStruct2:
         avg_overall /= len(lst) - 2
         self.avg = avg_overall
         self.marks = lst
+
     def setNum(self, num):
         self.num = num
+
     def __unicode__(self):
         return self.student
 

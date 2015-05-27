@@ -248,4 +248,4 @@ def raiting2(request):
         teachers = Teacher.objects.filter(subject=subject)
         subjects.append(SubjectInfo(subject, teachers))
     four = list[:4]
-    return render(request, 'journal/raiting.html', {'list':list, 'subjects':subjects, 'four': four})
+    return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four})

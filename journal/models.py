@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.db import models
 # -*- coding: utf-8 -*-
 # Create your models here.
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Subject(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название предмета')
+
     def __unicode__(self):
         return self.name
 
@@ -20,7 +21,7 @@ class Teacher(models.Model):
 
 
 class Class(models.Model):
-    name = models.CharField(max_length=20, verbose_name='Литер класса')
+    name = models.CharField(max_length=20, verbose_name=u'Литер класса')
     class1_teacher = models.ForeignKey(User, verbose_name=u'Классный руководитель')
     teacher = models.ManyToManyField(Teacher, blank=True, verbose_name=u'Учителя класса')
 
@@ -29,22 +30,22 @@ class Class(models.Model):
 
 
 class Student(models.Model):
-    fname = models.CharField(max_length=100, verbose_name=(u'Фамилия'))
-    lname = models.CharField(max_length=100, verbose_name=(u'Имя'))
-    fathers_name = models.CharField(max_length=100, verbose_name=(u'Отчество'))
-    school = models.CharField(max_length=100, verbose_name=(u'Школа'))
-    class_name = models.ForeignKey(Class, verbose_name=(u'Класс'))
-    photo = models.ImageField(blank=True, upload_to='avatars', verbose_name=(u'Фото'))
+    fname = models.CharField(max_length=100, verbose_name=u'Фамилия')
+    lname = models.CharField(max_length=100, verbose_name=u'Имя')
+    fathers_name = models.CharField(max_length=100, verbose_name=u'Отчество')
+    school = models.CharField(max_length=100, verbose_name=u'Школа')
+    class_name = models.ForeignKey(Class, verbose_name=u'Класс')
+    photo = models.ImageField(blank=True, upload_to='avatars', verbose_name=u'Фото')
     about = models.CharField(max_length=1000, blank=True)
-    pay_for_eating = models.IntegerField(verbose_name=(u'Оплата питания'))
-    report_from_school = models.BooleanField(default=True, verbose_name='Справка со школы')
-    medical_card = models.BooleanField(default=True, verbose_name=(u'Копия мед. карты'))
+    pay_for_eating = models.IntegerField(verbose_name=u'Оплата питания')
+    report_from_school = models.BooleanField(default=False, verbose_name='Справка со школы')
+    medical_card = models.BooleanField(default=False, verbose_name=u'Копия мед. карты')
 
     def __unicode__(self):
-        return self.fname + " " +  self.lname
+        return self.fname + " " + self.lname
 
 class Mark(models.Model):
-    mark = models.FloatField(verbose_name=u'Оценка')
+    mark = models.FloatField(verbose_name=u'Оценка', validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     teacher = models.ForeignKey(Teacher, verbose_name=u'Учитель')
     date = models.DateField(verbose_name=u'Дата')
     student = models.ForeignKey(Student, verbose_name=u'Ученик')
