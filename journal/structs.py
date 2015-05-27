@@ -24,8 +24,9 @@ class StudentStruct:
 
 
 class StudentInfoStruct:
-    def __init__(self, subject, marks):
+    def __init__(self, subject, marks, teacher):
         self.subject = subject
+        self.teacher = teacher
         self.marks = marks
         avg = 0.0
 
@@ -33,6 +34,7 @@ class StudentInfoStruct:
             avg += float(i)
         avg /= len(marks)
         self.avg = avg
+
 
     def delta(self, maxx):
         self.iter = range(maxx - len(self.marks))

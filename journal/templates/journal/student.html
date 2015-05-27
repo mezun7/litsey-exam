@@ -38,7 +38,7 @@
                               <tbody>
                                 {% for i in list %}
                                 <tr>
-                                  <td><font size="4"><b>{{ i.subject }}</b></font></td>
+                                  <td><b><font size="4">{{ i.subject }}</font></b><i> ({{ i.teacher }})</i></td>
                                   {% for mark in i.marks %}
                                     <td><font size="4">{{ mark|floatformat:2 }}</font></td>
                                   {% endfor %}
