@@ -15,7 +15,7 @@ from journal.models import Teacher, Class, Student, Subject, Mark
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, SubjectInfo, \
     MarkStruct
 
-
+@login_required
 def increase(request):
     # logics
     lst6 = [8, 2]
@@ -40,7 +40,7 @@ def increase(request):
             mark.mark *= 0.3
             mark.save()
 
-
+@login_required
 def test(request):
     teacher = Teacher.objects.get(pk=2)
     marks = Mark.objects.filter(teacher=teacher)
@@ -65,12 +65,12 @@ def home(request):
     # context['class_teacher'] = class_teacher[0]
     return render(request, 'journal/home.html', context)
 
-
+@login_required
 def class_list(request, class_id):
     students = Student.objects.filter(class_name=class_id)
     return render(request, 'journal/class_list.html', {'students': students})
 
-
+@login_required
 def class_journal(request, class_id):
     form = AddMarkForm(Class.objects.get(pk=class_id), request.POST)
     teacher = Teacher.objects.get(user=request.user)
@@ -155,7 +155,7 @@ class LoginView(View, TemplateResponseMixin, FormMixin):
     def form_invalid(self, form):
         return self.get(self.request)
 
-
+@login_required
 def student_profile(request, student_id):
     student = Student.objects.get(pk=student_id)
     teacher = Teacher.objects.all()
@@ -193,10 +193,9 @@ def student_profile(request, student_id):
                   {'student': student, 'classes': classes, 'list': list, 'maxx': range(maxx),
                    'class_teacher': class_teacher})
 
-
+@login_required
 def raiting(request):
     students = Student.objects.all()
-    #print students
     list = []
     for student in students:
         context = {}
@@ -234,7 +233,7 @@ def raiting(request):
     four = list[:4]
     return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four})
 
-
+@login_required
 def raiting2(request):
     students = Student.objects.all()
     #print students
