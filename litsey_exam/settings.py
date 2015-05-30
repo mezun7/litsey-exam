@@ -97,8 +97,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-MEDIA_ROOT = '/home/lyceedja/domains/lycee7.djangohost.name/public_html/media/'
-MEDIA_URL = '/media/'
-STATIC_ROOT = '/home/lyceedja/domains/lycee7.djangohost.name/public_html/static/'
-STATIC_URL = '/static/'
+# MEDIA_ROOT = '/home/lyceedja/domains/lycee7.djangohost.name/public_html/media/'
+# MEDIA_URL = '/media/'
+# STATIC_ROOT = '/home/lyceedja/domains/lycee7.djangohost.name/public_html/static/'
+# STATIC_URL = '/static/'
 LOGIN_URL = '/journal/login'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+pth = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'media')
+MEDIA_ROOT = pth
+MEDIA_URL = '/media/'
