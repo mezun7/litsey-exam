@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block page_header %}
-    Журнал ".." класса
+    Журнал {{ name }} класса
     <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Выставить оценку</button>
 {% endblock %}
 
@@ -45,7 +45,13 @@
                   <td><img src="/media/{{ i.student.photo }}" class="img-thumbnail" width="100" height="100"></td>
                   <td>{{ i.student }}</td>
                   {% for mark in i.marks %}
-                    <td>{{ mark.mark }}</td>
+                    <td>
+                        {% if mark.comment %}
+                            <a data-toggle="modal" data-target="#{{ mark.id }}">{{ mark.mark }}</a>
+                        {% else %}
+                            {{ mark.mark }}
+                        {% endif %}
+                    </td>
                   {% endfor %}
                   {% for i in i.iter %}
                     <td></td>
@@ -57,23 +63,47 @@
             </table>
           </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Выставление оценки</h4>
-            </div>
-            <form action="{% url 'journal:class_journal' id %}" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Send</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Выставление оценки</h4>
                 </div>
-            </form>
+                <form action="{% url 'journal:class_journal' id %}" method="post">
+                    {% csrf_token %}
+                    {% for f in form %}
+{#                        <label>{{ f.label }}</label>#}
+                        <p>{{ f }}</p>
+                    {% endfor %}
+
+{#                    {{ form.as_p }}#}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    {% for i in list %}
+        {% for mark in i.marks %}
+            </div>
+                <div class="modal fade" id="{{ mark.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Комментарий к оценке</h4>
+                            </div>
+                            <div class="container">
+                                <h3><p class="text-info">{{ mark.comment }}</p></h3>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+        {% endfor %}
+    {% endfor %}
 {% endblock %}
 
 

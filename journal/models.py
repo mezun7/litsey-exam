@@ -38,8 +38,10 @@ class Student(models.Model):
     photo = models.ImageField(blank=True, upload_to='avatars', verbose_name=u'Фото')
     about = models.CharField(max_length=1000, blank=True)
     pay_for_eating = models.IntegerField(verbose_name=u'Оплата питания')
-    report_from_school = models.BooleanField(default=False, verbose_name='Справка со школы')
+    report_from_school = models.BooleanField(default=False, verbose_name=u'Справка со школы')
     medical_card = models.BooleanField(default=False, verbose_name=u'Копия мед. карты')
+    phone_number = models.CharField(max_length=13, verbose_name=u'Номер телефона ребенка', blank=True)
+    phone_parent = models.CharField(max_length=13, verbose_name=u'Номер родителя')
 
     def __unicode__(self):
         return self.fname + " " + self.lname
@@ -49,6 +51,7 @@ class Mark(models.Model):
     teacher = models.ForeignKey(Teacher, verbose_name=u'Учитель')
     date = models.DateField(verbose_name=u'Дата')
     student = models.ForeignKey(Student, verbose_name=u'Ученик')
+    comment = models.TextField(blank=True, verbose_name=u'Комментарий')
 
     def __unicode__(self):
         return self.student.lname + self.student.fname + ": " + str(self.mark)

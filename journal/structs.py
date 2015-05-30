@@ -22,19 +22,27 @@ class StudentStruct:
     def __unicode__(self):
         return self.student
 
+class MarkStruct:
+    def __init__(self, mark, comment, id):
+        self.mark = mark
+        self.comment = comment
+        self.id = id
 
 class StudentInfoStruct:
     def __init__(self, subject, marks, teacher):
         self.subject = subject
         self.teacher = teacher
         self.marks = marks
+        print marks
         avg = 0.0
-
         for i in marks:
-            avg += float(i)
+            avg = avg + i.mark
+
+            #print type(i), i.comment, i.mark
+            #print i.mark.mark
+
         avg /= len(marks)
         self.avg = avg
-
 
     def delta(self, maxx):
         self.iter = range(maxx - len(self.marks))

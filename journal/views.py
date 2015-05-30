@@ -12,7 +12,8 @@ from django.views.generic.edit import FormMixin
 import math
 from journal.forms import LoginForm, AddMarkForm
 from journal.models import Teacher, Class, Student, Subject, Mark
-from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, SubjectInfo
+from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, SubjectInfo, \
+    MarkStruct
 
 
 def increase(request):
@@ -79,7 +80,10 @@ def class_journal(request, class_id):
         mark.student = form.cleaned_data['student']
         mark.mark = form.cleaned_data['mark']
         mark.date = datetime.datetime.now()
+        mark.comment = form.cleaned_data['comment']
         mark.save()
+    else:
+        print "Oooooooops"
 
     students = Student.objects.filter(class_name=class_id)
 
@@ -157,6 +161,7 @@ def student_profile(request, student_id):
     teacher = Teacher.objects.all()
     classes = Class.objects.all()
     marks = student.mark_set.all()
+
     class_teacher = student.class_name.class1_teacher
     list = []
     context = {}
@@ -166,15 +171,16 @@ def student_profile(request, student_id):
         subj_context[teacher.subject] = teacher.user.get_full_name()
 
     for mark in marks:
+
         if context.has_key(mark.teacher.subject):
-            context[mark.teacher.subject].append(mark.mark)
+            context[mark.teacher.subject].append(MarkStruct(mark.mark, mark.comment, mark.id))
         else:
-            context[mark.teacher.subject] = [mark.mark]
+            context[mark.teacher.subject] = [MarkStruct(mark.mark, mark.comment, mark.id)]
 
     maxx = 0
     for subject in Subject.objects.all():
         if not subject in context.keys():
-            context[subject] = [0.0]
+            context[subject] = [MarkStruct(0, comment=None, id=None)]
     for key in context.keys():
         #print subj_context
         list.append(StudentInfoStruct(subject=key, marks=context[key], teacher=subj_context[key]))
