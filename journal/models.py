@@ -44,7 +44,7 @@ class Student(models.Model):
     phone_parent = models.CharField(max_length=13, verbose_name=u'Номер родителя')
 
     def __unicode__(self):
-        return self.fname + " " + self.lname
+        return self.fname + " " + self.lname + " " + self.fathers_name
 
 class Mark(models.Model):
     mark = models.FloatField(verbose_name=u'Оценка', validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
