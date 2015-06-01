@@ -82,8 +82,7 @@ def class_journal(request, class_id):
         mark.date = datetime.datetime.now()
         mark.comment = form.cleaned_data['comment']
         mark.save()
-    else:
-        print "Oooooooops"
+        return HttpResponseRedirect('')
 
     students = Student.objects.filter(class_name=class_id)
 
