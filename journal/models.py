@@ -55,3 +55,11 @@ class Mark(models.Model):
 
     def __unicode__(self):
         return self.student.lname + self.student.fname + ": " + str(self.mark)
+
+
+class MarksCoeff(models.Model):
+    subject = models.ForeignKey(Subject, verbose_name=u'Предмет')
+    coeff = models.FloatField(verbose_name=u'Коэффицент')
+
+    def __unicode__(self):
+        return self.subject.name + ": " + str(self.coeff)

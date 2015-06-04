@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormMixin
 import math
 from journal.forms import LoginForm, AddMarkForm
-from journal.models import Teacher, Class, Student, Subject, Mark
+from journal.models import Teacher, Class, Student, Subject, Mark, MarksCoeff
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, SubjectInfo, \
     MarkStruct
 
@@ -160,7 +160,10 @@ def student_profile(request, student_id):
     teacher = Teacher.objects.all()
     classes = Class.objects.all()
     marks = student.mark_set.all()
-
+    coeffs = {}
+    coeffs_list = MarksCoeff.objects.all()
+    for coeff in coeffs_list:
+        coeffs[coeff.subject] = coeff.coeff
     class_teacher = student.class_name.class1_teacher
     list = []
     context = {}
@@ -172,9 +175,9 @@ def student_profile(request, student_id):
     for mark in marks:
 
         if context.has_key(mark.teacher.subject):
-            context[mark.teacher.subject].append(MarkStruct(mark.mark, mark.comment, mark.id))
+            context[mark.teacher.subject].append(MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id))
         else:
-            context[mark.teacher.subject] = [MarkStruct(mark.mark, mark.comment, mark.id)]
+            context[mark.teacher.subject] = [MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id)]
 
     maxx = 0
     for subject in Subject.objects.all():
@@ -194,15 +197,21 @@ def student_profile(request, student_id):
 
 @login_required
 def raiting(request):
+    coeffs = {}
+    coeffs_list = MarksCoeff.objects.all()
+    for coeff in coeffs_list:
+        coeffs[coeff.subject] = coeff.coeff
+    #print coeffs_list, "Yes"
     students = Student.objects.all()
     list = []
     for student in students:
         context = {}
         for mark in student.mark_set.all():
+            #print mark.teacher.subject.markscoeff_set, "YEs"
             if context.has_key(mark.teacher.subject):
-                context[mark.teacher.subject].append(mark.mark)
+                context[mark.teacher.subject].append(mark.mark * coeffs[mark.teacher.subject])
             else:
-                context[mark.teacher.subject] = [mark.teacher.subject, mark.mark]
+                context[mark.teacher.subject] = [mark.teacher.subject, mark.mark * coeffs[mark.teacher.subject]]
         for subject in Subject.objects.all():
             if not subject in context.keys():
                 context[subject] = [subject, 0.0]
@@ -237,6 +246,7 @@ def raiting2(request):
     students = Student.objects.all()
     #print students
     list = []
+
     for student in students:
         context = {}
         for mark in student.mark_set.all():

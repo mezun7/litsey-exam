@@ -3,8 +3,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.http import HttpResponse
-from journal.models import Teacher, Class, Subject, Mark, Student
-
+from journal.models import Teacher, Class, Subject, Mark, Student, MarksCoeff
 
 
 def export_xlsx(modeladmin, request, queryset):
@@ -118,3 +117,4 @@ admin.site.register(Class, ClassAdmin)
 admin.site.register(Subject)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Mark, MarkAdmin)
+admin.site.register(MarksCoeff)

@@ -8,8 +8,10 @@ class StudentStruct:
         self.student = student
         self.marks = marks
         avg = 0.0
+
         for i in marks:
             avg += i.mark
+            #print i.mark.teacher.subject.name + ": " + i.mark.teacher.subject.markscoeff_set[0]
         if len(marks) == 0:
             avg = 0
         else:
@@ -71,10 +73,10 @@ class StudentsRaitingStruct:
             mark = avg
         for i in lst:
             avg_overall += i
-        if (len(lst) != 0):
-            avg_overall /= len(lst)
-        else:
-            avg_overall = 0.0
+        # if (len(lst) != 0):
+        #     avg_overall /= len(lst)
+        # else:
+        #     avg_overall = 0.0
         self.avg = avg_overall
         self.marks = lst
 
