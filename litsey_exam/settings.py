@@ -62,11 +62,11 @@ WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 DATABASES = {
  'default': {
  'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
- 'NAME': 'd9orkamdai16db', # Or path to database file if using sqlite3.
- 'USER': 'wvoryagqrfwfoh', # Not used with sqlite3.
- 'PASSWORD': 'FeMJfHHsuBsIGQWx5Dzs9JHUgF', # Not used with sqlite3.
- 'HOST': 'ec2-54-247-79-142.eu-west-1.compute.amazonaws.com', # Set to empty string for localhost. Not used with sqlite3.
- 'PORT': '5432', # Set to empty string for default. Not used with sqlite3.
+ 'NAME': 'journal', # Or path to database file if using sqlite3.
+ 'USER': 'postgres', # Not used with sqlite3.
+ 'PASSWORD': 'pyfybtcbkf', # Not used with sqlite3.
+ 'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+ 'PORT': '', # Set to empty string for default. Not used with sqlite3.
  }
 }
 #
@@ -125,7 +125,7 @@ USE_TZ = True
 # STATIC_URL = '/static/'
 LOGIN_URL = '/journal/login'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
