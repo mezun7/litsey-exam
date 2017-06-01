@@ -12,8 +12,10 @@ from django.views.generic.edit import FormMixin
 import math
 from journal.forms import LoginForm, AddMarkForm
 from journal.models import Teacher, Class, Student, Subject, Mark, MarksCoeff
-from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, SubjectInfo, \
-    MarkStruct
+from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, \
+    SubjectInfo, \
+    MarkStruct, ClassStruct
+
 
 @login_required
 def increase(request):
@@ -40,6 +42,7 @@ def increase(request):
             mark.mark *= 0.3
             mark.save()
 
+
 @login_required
 def test(request):
     teacher = Teacher.objects.get(pk=2)
@@ -65,10 +68,12 @@ def home(request):
     # context['class_teacher'] = class_teacher[0]
     return render(request, 'journal/home.html', context)
 
+
 @login_required
 def class_list(request, class_id):
     students = Student.objects.filter(class_name=class_id)
     return render(request, 'journal/class_list.html', {'students': students})
+
 
 @login_required
 def class_journal(request, class_id):
@@ -110,6 +115,20 @@ def class_journal(request, class_id):
     return render(request, 'journal/class_journal.html',
                   {'list': lst, 'maxx': range(maxx), 'form': form, 'id': class_id,
                    'classes': classes, 'name': class_name})
+
+
+def get_phone_book(request, class_id=1):
+    lst = []
+    students = Student.objects.filter(class_name=class_id)
+    for student in students:
+        lst.append(student)
+        print student
+
+    name = Class.objects.get(pk=class_id)
+    context = {'list': lst,
+               'name': name}
+
+    return render(request, 'journal/phone_book.html', context)
 
 
 def log_out(request):
@@ -154,6 +173,7 @@ class LoginView(View, TemplateResponseMixin, FormMixin):
     def form_invalid(self, form):
         return self.get(self.request)
 
+
 @login_required
 def student_profile(request, student_id):
     student = Student.objects.get(pk=student_id)
@@ -169,31 +189,34 @@ def student_profile(request, student_id):
     context = {}
     subj_context = {}
     for teacher in student.class_name.teacher.all():
-        #print teacher.subject
+        # print teacher.subject
         subj_context[teacher.subject] = teacher.user.get_full_name()
 
     for mark in marks:
 
         if context.has_key(mark.teacher.subject):
-            context[mark.teacher.subject].append(MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id))
+            context[mark.teacher.subject].append(
+                MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id))
         else:
-            context[mark.teacher.subject] = [MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id)]
+            context[mark.teacher.subject] = [
+                MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id)]
 
     maxx = 0
     for subject in Subject.objects.all():
         if not subject in context.keys():
             context[subject] = [MarkStruct(0, comment=None, id=None)]
     for key in context.keys():
-        #print subj_context
+        # print subj_context
         list.append(StudentInfoStruct(subject=key, marks=context[key], teacher=subj_context[key]))
         maxx = max(maxx, len(context[key]))
     for i in list:
         i.delta(maxx)
-    #print list
+    # print list
     list.sort(key=lambda x: x.avg, reverse=True)
     return render(request, 'journal/student.html',
                   {'student': student, 'classes': classes, 'list': list, 'maxx': range(maxx),
                    'class_teacher': class_teacher})
+
 
 @login_required
 def raiting(request):
@@ -201,13 +224,13 @@ def raiting(request):
     coeffs_list = MarksCoeff.objects.all()
     for coeff in coeffs_list:
         coeffs[coeff.subject] = coeff.coeff
-    #print coeffs_list, "Yes"
+    # print coeffs_list, "Yes"
     students = Student.objects.all()
     list = []
     for student in students:
         context = {}
         for mark in student.mark_set.all():
-            #print mark.teacher.subject.markscoeff_set, "YEs"
+            # print mark.teacher.subject.markscoeff_set, "YEs"
             if context.has_key(mark.teacher.subject):
                 context[mark.teacher.subject].append(mark.mark * coeffs[mark.teacher.subject])
             else:
@@ -221,7 +244,7 @@ def raiting(request):
 
         marks.sort(key=lambda x: x[0].name, reverse=False)
         list.append(StudentsRaitingStruct(student, marks))
-        #print len(list)
+        # print len(list)
     # for marks in list:
     #     #print True
     #     #print '---', marks.student, '-----'
@@ -233,7 +256,7 @@ def raiting(request):
         sum += 1
     subjects = []
     tmp_subjects = Subject.objects.all().order_by('name')
-    #print tmp_subjects
+    # print tmp_subjects
     for subject in tmp_subjects:
         teachers = Teacher.objects.filter(subject=subject)
         subjects.append(SubjectInfo(subject, teachers))
@@ -241,10 +264,11 @@ def raiting(request):
     four = list[:4]
     return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four})
 
+
 @login_required
 def raiting2(request):
     students = Student.objects.all()
-    #print students
+    # print students
     list = []
 
     for student in students:
@@ -265,7 +289,7 @@ def raiting2(request):
 
         marks.sort(key=lambda x: x[0].name, reverse=False)
         list.append(StudentsRaitingStruct2(student, marks))
-        #print len(list)
+        # print len(list)
     # for marks in list:
     #     #print True
     #     #print '---', marks.student, '-----'
@@ -277,9 +301,23 @@ def raiting2(request):
         sum += 1
     subjects = []
     tmp_subjects = Subject.objects.all().order_by('name')
-    #print tmp_subjects
+    # print tmp_subjects
     for subject in tmp_subjects:
         teachers = Teacher.objects.filter(subject=subject)
         subjects.append(SubjectInfo(subject, teachers))
     four = list[:4]
     return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four})
+
+
+def get_overall(request):
+    lst = []
+    cls = Class.objects.all()
+    for i in cls:
+        name = i.name
+        sum = i.student_set.count()
+        lst.append(ClassStruct(name, sum))
+    context = {
+        'list': lst
+    }
+
+    return render(request, 'journal/overall.html', context)

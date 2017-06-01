@@ -1,0 +1,108 @@
+{% extends 'journal/base.html' %}
+{%  block title %}
+
+    Кол-во учеников в классах
+{% endblock %}
+
+{% block page_header %}
+    <script type="text/javascript">
+	setTimeout(function() {
+		if (document.hasFocus()) {
+			location.reload();
+			// console.log("rel1");
+		}
+		window.addEventListener('focus', function() {
+			location.reload();
+			// console.log("rel2");
+		}, true);
+	}, 5000);
+</script>
+    Количество учеников в классах
+{#    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Выставить оценку</button>#}
+{% endblock %}
+
+{% block main_content_up %}
+{% endblock %}
+
+{% block main_menu %}
+{#    <ul class="nav nav-sidebar">#}
+{#    <li>Мои классы:</li>#}
+{#        {% for class in classes %}#}
+{#            <li><a href="{% url 'journal:class_journal' class.id %}">{{ class.name}}</a> </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    {% if class_teacher %}#}
+{#       <ul class="nav nav-sidebar">#}
+{#       <li>Класс. рук</li>#}
+{#        <li><a href="{% url 'journal:my_class' class_teacher.id %}">{{ class_teacher.name }}</a> </li>#}
+{#       </ul>#}
+{#    {% endif %}#}
+{% endblock %}
+
+{% block main_content_down %}
+         <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Класс</th>
+                  <th>Количество</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in list %}
+                <tr>
+                  <td class=""><h4>{{ i.name }}</h4></td>
+                  <td><h4>{{ i.sum }}</h4></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+{#    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
+{#        <div class="modal-dialog">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
+{#                    <h4 class="modal-title" id="myModalLabel">Выставление оценки</h4>#}
+{#                </div>#}
+{#                <form action="{% url 'journal:class_journal' id %}" method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {% for f in form %}#}
+{#                        <label>{{ f.label }}</label>#}
+{#                        <p>{{ f }}</p>#}
+{#                    {% endfor %}#}
+{##}
+{#                    {{ form.as_p }}#}
+{#                    <div class="modal-footer">#}
+{#                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+{#                        <button type="submit" class="btn btn-primary">Send</button>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    {% for i in list %}#}
+{#        {% for mark in i.marks %}#}
+{#            </div>#}
+{#                <div class="modal fade" id="{{ mark.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
+{#                    <div class="modal-dialog">#}
+{#                        <div class="modal-content">#}
+{#                            <div class="modal-header">#}
+{#                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
+{#                                <h4 class="modal-title" id="myModalLabel">Комментарий к оценке</h4>#}
+{#                            </div>#}
+{#                            <div class="container">#}
+{#                                <h3><p class="text-info">{{ mark.comment }}</p></h3>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#            </div>#}
+{##}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+{% endblock %}
+
+
+<!-- Small modal -->
+
+

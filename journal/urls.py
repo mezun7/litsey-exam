@@ -15,6 +15,8 @@ urlpatterns = patterns('journal.views',
     url(r'^class/(?P<class_id>\d+)/master$', 'class_journal', name='my_class'),
     url(r'^student/(?P<student_id>\d+)/$', 'student_profile', name='student'),
     url(r'^raiting/$', 'raiting', name='raiting'),
-    url(r'^inc/$', 'increase', name='inc')
+    url(r'^inc/$', 'increase', name='inc'),
+    url(r'^phone/(?P<class_id>\d+)/$', 'get_phone_book', name='phone'),
+    url(r'^overall/$', 'get_overall', name='overall')
     #url(r'^event/(?P<event_id>\d+)/edit/$', 'event_edit', name='event_edit')
 )

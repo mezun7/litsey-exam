@@ -130,3 +130,8 @@ class SubjectInfo:
             self.avg = sum / iter
         else:
             self.avg = 0
+
+class ClassStruct:
+    def __init__(self, name, sum):
+        self.name = name
+        self.sum = sum
