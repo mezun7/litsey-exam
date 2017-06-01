@@ -312,10 +312,14 @@ def raiting2(request):
 def get_overall(request):
     lst = []
     cls = Class.objects.all()
+    sum2 = 0
     for i in cls:
         name = i.name
         sum = i.student_set.count()
+        sum2 += int(sum)
         lst.append(ClassStruct(name, sum))
+    tmp = ClassStruct('Всего', sum2)
+    lst.append(tmp)
     context = {
         'list': lst
     }
