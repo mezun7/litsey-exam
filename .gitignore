@@ -9,3 +9,5 @@
 *.pyc
 
 *.pyc
+
+journal/models.pyc
