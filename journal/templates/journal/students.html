@@ -1,0 +1,40 @@
+{% extends 'journal/base.html' %}
+{%  block title %}
+
+    Абитуриенты
+{% endblock %}
+
+{% block page_header %}
+Ученики
+{% endblock %}
+
+{% block main_content_up %}
+
+{% endblock %}
+{% block main_menu %}
+
+{% endblock %}
+{% block main_content_down %}
+<table class="table table-responsive table-striped">
+  <tr>
+    <th class="tg-yw4l">ФИО</th>
+    <th class="tg-yw4l">Школа</th>
+    <th class="tg-yw4l">Номер телефона</th>
+    <th class="tg-yw4l">Класс</th>
+    <th class="tg-yw4l">Оплата</th>
+  </tr>
+
+      {% for student in students %}
+         <tr>
+             <td class="tg-yw4l"><a href="{% url 'journal:edit' student.sid %}">{{ student.name }}</a></td>
+            <td class="tg-yw4l">{{ student.school }}</td>
+            <td class="tg-yw4l">{{ student.phone_number }}</td>
+            <td class="tg-yw4l">{{ student.cls }}</td>
+            <td class="tg-yw4l">{{ student.money }}</td>
+          </tr>
+      {% endfor %}
+
+
+
+</table>
+{% endblock %}

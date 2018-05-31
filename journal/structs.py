@@ -135,3 +135,13 @@ class ClassStruct:
     def __init__(self, name, sum):
         self.name = name
         self.sum = sum
+
+
+class RegisterStruct:
+    def __init__(self, name, school, phone_number, money, cls, sid):
+        self.name = name
+        self.school = school
+        self.phone_number = phone_number
+        self.money = money
+        self.cls = cls
+        self.sid = sid
