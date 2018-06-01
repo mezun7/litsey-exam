@@ -366,6 +366,7 @@ def student_edit(request, stud_id):
             student.report_from_school = studentForm.cleaned_data['school-req']
             student.phone_parent = studentForm.cleaned_data['phone-parent']
             student.phone_number = studentForm.cleaned_data['phone-child']
+            student.pay_for_eating = studentForm.cleaned_data['money']
             student.save()
             return HttpResponseRedirect(reverse('journal:list'))
 
