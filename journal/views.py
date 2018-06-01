@@ -321,6 +321,8 @@ def get_overall(request):
         lst.append(ClassStruct(name, sum))
     tmp = ClassStruct('Всего', sum2)
     lst.append(tmp)
+    tmp2 = ClassStruct('Всего пригласили', Student.objects.all().count())
+    lst.append(tmp2)
     context = {
         'list': lst
     }
