@@ -226,7 +226,7 @@ def raiting(request):
     for coeff in coeffs_list:
         coeffs[coeff.subject] = coeff.coeff
     # print coeffs_list, "Yes"
-    students = Student.objects.all()
+    students = Student.objects.filter(class_name__isnull=False)
     list = []
     for student in students:
         context = {}
@@ -268,7 +268,7 @@ def raiting(request):
 
 @login_required
 def raiting2(request):
-    students = Student.objects.all()
+    students = Student.objects.filter(class_name__isnull=False)
     # print students
     list = []
 
