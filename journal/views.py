@@ -381,8 +381,9 @@ def upload_csv(request):
         form = UploadForm(request.POST, request.FILES)
         print(request.FILES.keys())
         csv_file = request.FILES["csv_file"]
-        file_data = csv_file.read().decode("utf-8")
+        file_data = csv_file.read()
         reader = csv.DictReader(file_data.splitlines())
+        lst = []
         for row in reader:
             student = Student()
             student.fname = row['Surname']
@@ -390,6 +391,7 @@ def upload_csv(request):
             student.fathers_name = row['Father']
             student.school = row['School']
             student.phone_parent = row['Phone']
-            student.save()
+            lst.append(student)
+        Student.objects.bulk_create(lst)
         return HttpResponseRedirect(reverse('journal:list'))
     return render(request, 'journal/upload.html', context)
