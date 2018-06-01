@@ -329,7 +329,7 @@ def get_overall(request):
 
     return render(request, 'journal/overall.html', context)
 
-
+@login_required()
 def students_list(request):
     context = {}
     lst = []
@@ -342,7 +342,7 @@ def students_list(request):
 
     return render(request, 'journal/students.html', context)
 
-
+@login_required()
 def student_edit(request, stud_id):
     student = Student.objects.get(id=stud_id)
 
@@ -372,7 +372,7 @@ def student_edit(request, stud_id):
     context = {'student': studentForm}
     return render(request, 'journal/edit.html', context)
 
-
+@login_required()
 def upload_csv(request):
     context = {
         'form': UploadForm()
