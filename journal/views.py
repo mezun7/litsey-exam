@@ -10,7 +10,7 @@ from django.views.generic import View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormMixin
 import math
-from journal.forms import LoginForm, AddMarkForm
+from journal.forms import LoginForm, AddMarkForm, StudentForm
 from journal.models import Teacher, Class, Student, Subject, Mark, MarksCoeff
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, \
     SubjectInfo, \
@@ -340,6 +340,33 @@ def students_list(request):
     return render(request, 'journal/students.html', context)
 
 
+
+
 def student_edit(request, stud_id):
-    context = {}
+
+    student = Student.objects.get(id=stud_id)
+
+    cls = None
+    try:
+        if student.class_name is not None:
+            cls = student.class_name
+        else:
+            cls = Class.objects.get(class1_teacher=request.user.id)
+    except:
+        cls = None
+    studentForm = StudentForm(student, cls)
+    if request.POST:
+        studentForm = StudentForm(student, cls, request.POST)
+        if studentForm.is_valid():
+            student.fname = studentForm.cleaned_data['fname']
+            student.lname = studentForm.cleaned_data['lname']
+            student.fathers_name = studentForm.cleaned_data['fathers_name']
+            student.school = studentForm.cleaned_data['school']
+            student.class_name = studentForm.cleaned_data['class']
+            student.medical_card = studentForm.cleaned_data['medical']
+            student.report_from_school = studentForm.cleaned_data['school-req']
+            student.save()
+            return HttpResponseRedirect(reverse('journal:list'))
+
+    context = {'student': studentForm}
     return render(request, 'journal/edit.html', context)

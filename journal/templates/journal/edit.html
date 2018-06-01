@@ -15,7 +15,10 @@
 
 {% endblock %}
 {% block main_content_down %}
-bal bal
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+    {{ student.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
 
-</table>
 {% endblock %}
