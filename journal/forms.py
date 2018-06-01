@@ -39,8 +39,16 @@ class StudentForm(forms.Form):
             widget=forms.TextInput(attrs={'placeholder': u'Оплата питания', 'class': 'form-control'}),
             initial=student.pay_for_eating, label=u'Оплата питания')
 
-        self.fields['class'] = forms.ModelChoiceField(queryset=Class.objects.all(), initial=cls, label=u'Класс', widget=forms.Select(attrs={'class': 'form-control'}))
+        self.fields['class'] = forms.ModelChoiceField(queryset=Class.objects.all(), initial=cls, label=u'Класс',
+                                                      widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['medical'] = forms.BooleanField(initial=student.medical_card, required=False,
                                                     label=u'Медицинская карта')
         self.fields['school-req'] = forms.BooleanField(initial=student.report_from_school, required=False,
                                                        label=u'Справка со школы')
+
+
+class UploadForm(forms.Form):
+    csv_file = forms.FileField(widget=forms.FileInput(attrs={
+        'class': 'form-control',
+        'accept': '.csv'
+    }))

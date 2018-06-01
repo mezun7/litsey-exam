@@ -61,7 +61,7 @@ WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 DATABASES = {
  'default': {
  'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
- 'NAME': 'journal', # Or path to database file if using sqlite3.
+ 'NAME': 'journal2018', # Or path to database file if using sqlite3.
  'USER': 'postgres', # Not used with sqlite3.
  'PASSWORD': 'pyfybtcbkf', # Not used with sqlite3.
  'HOST': '46.101.124.2', # Set to empty string for localhost. Not used with sqlite3.

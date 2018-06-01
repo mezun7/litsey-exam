@@ -1,5 +1,6 @@
 # coding=utf-8
 # Create your views here.
+import csv
 import datetime
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -10,7 +11,7 @@ from django.views.generic import View
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormMixin
 import math
-from journal.forms import LoginForm, AddMarkForm, StudentForm
+from journal.forms import LoginForm, AddMarkForm, StudentForm, UploadForm
 from journal.models import Teacher, Class, Student, Subject, Mark, MarksCoeff
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, \
     SubjectInfo, \
@@ -340,13 +341,9 @@ def students_list(request):
     return render(request, 'journal/students.html', context)
 
 
-
-
 def student_edit(request, stud_id):
-
     student = Student.objects.get(id=stud_id)
 
-    cls = None
     try:
         if student.class_name is not None:
             cls = student.class_name
@@ -370,3 +367,24 @@ def student_edit(request, stud_id):
 
     context = {'student': studentForm}
     return render(request, 'journal/edit.html', context)
+
+
+def upload_csv(request):
+    context = {
+        'form': UploadForm()
+    }
+    if request.POST:
+        form = UploadForm(request.POST, request.FILES)
+        print(request.FILES.keys())
+        csv_file = request.FILES["csv_file"]
+        file_data = csv_file.read().decode("utf-8")
+        reader = csv.DictReader(file_data.splitlines())
+        for row in reader:
+            student = Student()
+            student.fname = row['Surname']
+            student.lname = row['Name']
+            student.fathers_name = row['Father']
+            student.school = row['School']
+            student.save()
+        return HttpResponseRedirect(reverse('journal:list'))
+    return render(request, 'journal/upload.html', context)
