@@ -362,6 +362,8 @@ def student_edit(request, stud_id):
             student.class_name = studentForm.cleaned_data['class']
             student.medical_card = studentForm.cleaned_data['medical']
             student.report_from_school = studentForm.cleaned_data['school-req']
+            student.phone_parent = studentForm.cleaned_data['phone-parent']
+            student.phone_number = studentForm.cleaned_data['phone-child']
             student.save()
             return HttpResponseRedirect(reverse('journal:list'))
 
@@ -385,6 +387,7 @@ def upload_csv(request):
             student.lname = row['Name']
             student.fathers_name = row['Father']
             student.school = row['School']
+            student.phone_parent = row['Phone']
             student.save()
         return HttpResponseRedirect(reverse('journal:list'))
     return render(request, 'journal/upload.html', context)

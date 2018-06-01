@@ -38,6 +38,13 @@ class StudentForm(forms.Form):
         self.fields['money'] = forms.IntegerField(
             widget=forms.TextInput(attrs={'placeholder': u'Оплата питания', 'class': 'form-control'}),
             initial=student.pay_for_eating, label=u'Оплата питания')
+        self.fields['phone-parent'] = forms.CharField(
+            widget=forms.TextInput(attrs={'placeholder': u'Номер телефона родителя', 'class': 'form-control'}), initial=student.phone_parent,
+            label=u'Номер телефона родителя')
+        self.fields['phone-child'] = forms.CharField(
+            widget=forms.TextInput(attrs={'placeholder': u'Номер телефона ребенка', 'class': 'form-control'}),
+            initial=student.phone_number,
+            label=u'Номер телефона ребенка')
 
         self.fields['class'] = forms.ModelChoiceField(queryset=Class.objects.all(), initial=cls, label=u'Класс',
                                                       widget=forms.Select(attrs={'class': 'form-control'}))
