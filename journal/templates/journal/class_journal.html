@@ -51,6 +51,7 @@
                         {% else %}
                             {{ mark.mark }}
                         {% endif %}
+                    (<a href="{% url 'journal:delete-mark' mark.id %}?from={{ current }}">x</a>)
                     </td>
                   {% endfor %}
                   {% for i in i.iter %}

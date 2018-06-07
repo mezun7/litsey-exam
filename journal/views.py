@@ -4,7 +4,7 @@ import csv
 import datetime
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy, resolve
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.views.generic import View
@@ -80,6 +80,7 @@ def class_list(request, class_id):
 def class_journal(request, class_id):
     form = AddMarkForm(Class.objects.get(pk=class_id), request.POST)
     teacher = Teacher.objects.get(user=request.user)
+
     if (form.is_valid()):
         mark = Mark()
         mark.teacher = teacher
@@ -115,7 +116,16 @@ def class_journal(request, class_id):
     class_name = class_name.name
     return render(request, 'journal/class_journal.html',
                   {'list': lst, 'maxx': range(maxx), 'form': form, 'id': class_id,
-                   'classes': classes, 'name': class_name})
+                   'classes': classes, 'name': class_name, 'current': class_id})
+
+
+def delete_mark(request, mark_id):
+    class_id = 1
+    if request.GET.has_key('from'):
+        class_id = request.GET['from']
+    Mark.objects.get(id=mark_id).delete()
+
+    return HttpResponseRedirect(reverse('journal:class_journal', args=[class_id]))
 
 
 def get_phone_book(request, class_id=1):
@@ -329,6 +339,7 @@ def get_overall(request):
 
     return render(request, 'journal/overall.html', context)
 
+
 @login_required()
 def students_list(request):
     context = {}
@@ -341,6 +352,7 @@ def students_list(request):
     context['students'] = lst
 
     return render(request, 'journal/students.html', context)
+
 
 @login_required()
 def student_edit(request, stud_id):
@@ -372,6 +384,7 @@ def student_edit(request, stud_id):
 
     context = {'student': studentForm}
     return render(request, 'journal/edit.html', context)
+
 
 @login_required()
 def upload_csv(request):
