@@ -13,13 +13,13 @@
       <link rel="stylesheet" href="{% static 'journal/css/table-fixed-header.css' %}" media="screen" type="text/css">
 
           <div class="row placeholders">
-          {% for i in four %}
-            <div class="col-xs-6 col-sm-3">
-              <img src="/media/{{ i.student.photo }}" class="img-thumbnail" alt="Generic placeholder thumbnail">
-              <h4><a href="{% url 'journal:student' i.student.id %}"> {{i.student}}</a></h4>
-              <span class="text-muted">{{i.student.school}}</span>
-            </div>
-          {% endfor %}
+{#          {% for i in four %}#}
+{#            <div class="col-xs-6 col-sm-3">#}
+{#              <img src="/media/{{ i.student.photo }}" class="img-thumbnail" alt="Generic placeholder thumbnail">#}
+{#              <h4><a href="{% url 'journal:student' i.student.id %}"> {{i.student}}</a></h4>#}
+{#              <span class="text-muted">{{i.student.school}}</span>#}
+{#            </div>#}
+{#          {% endfor %}#}
         {% endblock %}
 {% block main_menu%}
     <ul class="nav nav-sidebar">
