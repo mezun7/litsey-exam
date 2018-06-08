@@ -145,3 +145,4 @@ class RegisterStruct:
         self.money = money
         self.cls = cls
         self.sid = sid
+

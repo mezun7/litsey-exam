@@ -277,6 +277,53 @@ def raiting(request):
 
 
 @login_required
+def print_raiting(request):
+    coeffs = {}
+    coeffs_list = MarksCoeff.objects.all()
+    for coeff in coeffs_list:
+        coeffs[coeff.subject] = coeff.coeff
+    # print coeffs_list, "Yes"
+    students = Student.objects.filter(class_name__isnull=False)
+    list = []
+    for student in students:
+        context = {}
+        for mark in student.mark_set.all():
+            # print mark.teacher.subject.markscoeff_set, "YEs"
+            if context.has_key(mark.teacher.subject):
+                context[mark.teacher.subject].append(mark.mark * coeffs[mark.teacher.subject])
+            else:
+                context[mark.teacher.subject] = [mark.teacher.subject, mark.mark * coeffs[mark.teacher.subject]]
+        for subject in Subject.objects.all():
+            if not subject in context.keys():
+                context[subject] = [subject, 0.0]
+        marks = []
+        for key in context.keys():
+            marks.append(context[key])
+
+        marks.sort(key=lambda x: x[0].name, reverse=False)
+        list.append(StudentsRaitingStruct(student, marks))
+        # print len(list)
+    # for marks in list:
+    #     #print True
+    #     #print '---', marks.student, '-----'
+    #     #print marks.marks
+    list.sort(key=lambda x: x.avg, reverse=True)
+    sum = 1
+    for i in list:
+        i.setNum(sum)
+        sum += 1
+    subjects = []
+    tmp_subjects = Subject.objects.all().order_by('name')
+    # print tmp_subjects
+    for subject in tmp_subjects:
+        teachers = Teacher.objects.filter(subject=subject)
+        subjects.append(SubjectInfo(subject, teachers))
+
+    four = list[:4]
+    return render(request, 'journal/print-raiting.html', {'list': list, 'subjects': subjects, 'four': four})
+
+
+@login_required
 def raiting2(request):
     students = Student.objects.filter(class_name__isnull=False)
     # print students

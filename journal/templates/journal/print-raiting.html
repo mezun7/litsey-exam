@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Print version</title>
+</head>
+<body>
+<table class="table table-hover table-fixed-header" id="example">
+              <thead class="header">
+                <tr>
+                  <th class="text-center">#</th>
+                  <th class="text-center">&#1060;&#1048;&#1054;</th>
+                 {% for subject in subjects %}
+                  <th class="text-center">{{ subject.subject }}<p class="text-muted">{{ subject.avg|floatformat:2 }}</p></th>
+                 {% endfor %}
+                  <th class="text-center">SUM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in list  %}
+                <tr>
+                  <td>{{ i.num }}</td>
+                  <td><font size="4"><a href="{% url 'journal:student' i.student.id %}">{{ i.student}}</a></font></td>
+                  {% for mark in i.marks %}
+                    <td><font size="4">{{ mark|floatformat:2}}</font></td>
+                  {% endfor %}
+                   <td><font size="4"><b>{{ i.avg|floatformat:2 }}</b></font></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+</body>
+</html>
