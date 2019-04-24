@@ -11,7 +11,7 @@ django-tinymce==1.5.3
 gunicorn==19.3.0
 kombu==3.0.26
 openpyxl==2.2.2
-Pillow==2.8.1
+Pillow==3.3.2
 psycopg2==2.7.4
 pystache==0.5.4
 pytz==2015.4
