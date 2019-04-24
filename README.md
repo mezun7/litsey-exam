@@ -3,5 +3,5 @@
 
 ## Requirments
 Python2
-
+Django 1.6
 
