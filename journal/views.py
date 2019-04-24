@@ -12,7 +12,7 @@ from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import FormMixin
 import math
 from journal.forms import LoginForm, AddMarkForm, StudentForm, UploadForm
-from journal.models import Teacher, Class, Student, Subject, Mark, MarksCoeff
+from journal.models import Teacher, Class2, Student, Subject, Mark, MarksCoeff, Parallel
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, \
     SubjectInfo, \
     MarkStruct, ClassStruct, RegisterStruct
@@ -62,10 +62,10 @@ def home(request):
     context = {'TeacherName': request.user.first_name + " " + request.user.last_name}
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
-    classes = Class.objects.filter(teacher=teachers[0])
+    classes = Class2.objects.filter(teacher=teachers[0])
     # print test2[0].id
     context['classes'] = classes
-    class_teacher = Class.objects.filter(class1_teacher=teachers[0])
+    class_teacher = Class2.objects.filter(class1_teacher=teachers[0])
     # context['class_teacher'] = class_teacher[0]
     return render(request, 'journal/home.html', context)
 
@@ -78,10 +78,10 @@ def class_list(request, class_id):
 
 @login_required
 def class_journal(request, class_id):
-    form = AddMarkForm(Class.objects.get(pk=class_id), request.POST)
+    form = AddMarkForm(Class2.objects.get(pk=class_id), request.POST)
     teacher = Teacher.objects.get(user=request.user)
 
-    if (form.is_valid()):
+    if form.is_valid():
         mark = Mark()
         mark.teacher = teacher
         mark.student = form.cleaned_data['student']
@@ -107,12 +107,12 @@ def class_journal(request, class_id):
 
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
-    classes = Class.objects.filter(teacher=teachers[0])
+    classes = Class2.objects.filter(teacher=teachers[0])
     # print test2[0].id
     classes = classes
     # class_teacher = Class.objects.filter(class1_teacher=teachers[0])
     # class_teacher = class_teacher[0]
-    class_name = Class.objects.get(pk=class_id)
+    class_name = Class2.objects.get(pk=class_id)
     class_name = class_name.name
     return render(request, 'journal/class_journal.html',
                   {'list': lst, 'maxx': range(maxx), 'form': form, 'id': class_id,
@@ -135,7 +135,7 @@ def get_phone_book(request, class_id=1):
         lst.append(student)
         print student
 
-    name = Class.objects.get(pk=class_id)
+    name = Class2.objects.get(pk=class_id)
     context = {'list': lst,
                'name': name}
 
@@ -188,8 +188,9 @@ class LoginView(View, TemplateResponseMixin, FormMixin):
 @login_required
 def student_profile(request, student_id):
     student = Student.objects.get(pk=student_id)
+    subjects = student.class_name.parallel.subject.all()
     teacher = Teacher.objects.all()
-    classes = Class.objects.all()
+    classes = Class2.objects.all()
     marks = student.mark_set.all()
     coeffs = {}
     coeffs_list = MarksCoeff.objects.all()
@@ -213,7 +214,7 @@ def student_profile(request, student_id):
                 MarkStruct(mark.mark * coeffs[mark.teacher.subject], mark.comment, mark.id)]
 
     maxx = 0
-    for subject in Subject.objects.all():
+    for subject in subjects:
         if not subject in context.keys():
             context[subject] = [MarkStruct(0, comment=None, id=None)]
     for key in context.keys():
@@ -224,19 +225,22 @@ def student_profile(request, student_id):
         i.delta(maxx)
     # print list
     list.sort(key=lambda x: x.avg, reverse=True)
+    parallel = student.class_name.parallel
     return render(request, 'journal/student.html',
                   {'student': student, 'classes': classes, 'list': list, 'maxx': range(maxx),
-                   'class_teacher': class_teacher})
+                   'class_teacher': class_teacher, 'parallel':parallel})
 
 
 @login_required
-def raiting(request):
+def raiting(request, parallel=1):
     coeffs = {}
     coeffs_list = MarksCoeff.objects.all()
+    parallel_link = Parallel.objects.get(pk=parallel)
+    tmp_subjects = parallel_link.subject.all()
     for coeff in coeffs_list:
         coeffs[coeff.subject] = coeff.coeff
     # print coeffs_list, "Yes"
-    students = Student.objects.filter(class_name__isnull=False)
+    students = Student.objects.filter(class_name__isnull=False, class_name__parallel=parallel)
     list = []
     for student in students:
         context = {}
@@ -246,7 +250,7 @@ def raiting(request):
                 context[mark.teacher.subject].append(mark.mark * coeffs[mark.teacher.subject])
             else:
                 context[mark.teacher.subject] = [mark.teacher.subject, mark.mark * coeffs[mark.teacher.subject]]
-        for subject in Subject.objects.all():
+        for subject in tmp_subjects:
             if not subject in context.keys():
                 context[subject] = [subject, 0.0]
         marks = []
@@ -266,14 +270,16 @@ def raiting(request):
         i.setNum(sum)
         sum += 1
     subjects = []
-    tmp_subjects = Subject.objects.all().order_by('name')
     # print tmp_subjects
     for subject in tmp_subjects:
         teachers = Teacher.objects.filter(subject=subject)
         subjects.append(SubjectInfo(subject, teachers))
 
     four = list[:4]
-    return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four})
+    parallels = Parallel.objects.all()
+
+    return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four,
+                                                    'parallels': parallels, 'parallel': parallel_link})
 
 
 @login_required
@@ -369,7 +375,7 @@ def raiting2(request):
 
 def get_overall(request):
     lst = []
-    cls = Class.objects.all()
+    cls = Class2.objects.all()
     sum2 = 0
     for i in cls:
         name = i.name
@@ -409,7 +415,7 @@ def student_edit(request, stud_id):
         if student.class_name is not None:
             cls = student.class_name
         else:
-            cls = Class.objects.get(class1_teacher=request.user.id)
+            cls = Class2.objects.get(class1_teacher=request.user.id)
     except:
         cls = None
     studentForm = StudentForm(student, cls)

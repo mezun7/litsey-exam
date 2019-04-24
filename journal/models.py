@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Subject(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название предмета')
 
@@ -17,16 +18,26 @@ class Teacher(models.Model):
     subject = models.ForeignKey(Subject, verbose_name=u'Предмет')
 
     def __unicode__(self):
-        return self.user.last_name + " " + self.user.first_name
+        # return self.user.last_name + " " + self.user.first_name
+        return self.user.get_full_name()
 
 
-class Class(models.Model):
+class Parallel(models.Model):
+    name = models.CharField(max_length=20, verbose_name=u'Параллель')
+    subject = models.ManyToManyField(Subject, verbose_name=u'Предмет', blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Class2(models.Model):
+    parallel = models.ForeignKey(Parallel, verbose_name=u'Параллель')
     name = models.CharField(max_length=20, verbose_name=u'Литер класса')
     class1_teacher = models.ForeignKey(User, verbose_name=u'Классный руководитель')
     teacher = models.ManyToManyField(Teacher, blank=True, verbose_name=u'Учителя класса')
 
     def __unicode__(self):
-        return self.name
+        return str(self.parallel) + " " + self.name
 
 
 class Student(models.Model):
@@ -34,7 +45,7 @@ class Student(models.Model):
     lname = models.CharField(max_length=100, verbose_name=u'Имя')
     fathers_name = models.CharField(max_length=100, verbose_name=u'Отчество')
     school = models.CharField(max_length=100, verbose_name=u'Школа', blank=True)
-    class_name = models.ForeignKey(Class, verbose_name=u'Класс', blank=True, null=True)
+    class_name = models.ForeignKey(Class2, verbose_name=u'Класс', blank=True, null=True)
     photo = models.ImageField(blank=True, upload_to='avatars', verbose_name=u'Фото')
     about = models.CharField(max_length=1000, blank=True)
     pay_for_eating = models.IntegerField(verbose_name=u'Оплата питания', default=0)
@@ -45,6 +56,7 @@ class Student(models.Model):
 
     def __unicode__(self):
         return self.fname + " " + self.lname + " " + self.fathers_name
+
 
 class Mark(models.Model):
     mark = models.FloatField(verbose_name=u'Оценка', validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])

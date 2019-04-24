@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.http import HttpResponse
-from journal.models import Teacher, Class, Subject, Mark, Student, MarksCoeff
+from journal.models import Teacher, Class2, Subject, Mark, Student, MarksCoeff, Parallel
 
 
 def export_xlsx(modeladmin, request, queryset):
@@ -35,7 +35,7 @@ def export_xlsx(modeladmin, request, queryset):
         c.value = columns[col_num][0]
         c.style.font.bold = True
         # set column width
-        ws.column_dimensions[get_column_letter(col_num+1)].width = columns[col_num][1]
+        ws.column_dimensions[get_column_letter(col_num + 1)].width = columns[col_num][1]
 
     for obj in queryset:
         row_num += 1
@@ -50,7 +50,6 @@ def export_xlsx(modeladmin, request, queryset):
             smart_str(obj.report_from_school),
             smart_str(obj.medical_card)
 
-
         ]
         for col_num in xrange(len(row)):
             c = ws.cell(row=row_num + 1, column=col_num + 1)
@@ -60,7 +59,9 @@ def export_xlsx(modeladmin, request, queryset):
     wb.save(response)
     return response
 
+
 export_xlsx.short_description = u"Export XLSX"
+
 
 def export_csv(StudentAdmin, request, queryset):
     import csv
@@ -68,7 +69,7 @@ def export_csv(StudentAdmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=student_info.csv'
     writer = csv.writer(response, csv.excel)
-    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    response.write(u'\ufeff'.encode('utf8'))  # BOM (optional...Excel needs it to open UTF-8 file properly)
     writer.writerow([
         smart_str(u"ID"),
         smart_str(u"Фамилия"),
@@ -93,28 +94,41 @@ def export_csv(StudentAdmin, request, queryset):
             smart_str(obj.medical_card),
         ])
     return response
+
+
 export_csv.short_description = u"Export CSV"
+
 
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('user', 'subject')
     search_fields = ('user', 'subject')
 
+
 class ClassAdmin(admin.ModelAdmin):
-    list_display = ('name', 'class1_teacher')
+    list_display = ('parallel', 'name', 'class1_teacher')
     search_fields = ('name',)
+
+
 class StudentAdmin(admin.ModelAdmin):
     actions = [export_csv, export_xlsx]
     list_display = ('fname', 'lname', 'fathers_name', 'school', 'class_name')
     search_fields = ('lname', 'fname', 'school')
+
 
 class MarkAdmin(admin.ModelAdmin):
     list_display = ('student', 'teacher', 'date', 'mark')
     search_fields = ('student', 'teacher', 'mark')
     list_filter = ('date',)
 
+
+class ParallelAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
 admin.site.register(Teacher, TeacherAdmin)
-admin.site.register(Class, ClassAdmin)
+admin.site.register(Class2, ClassAdmin)
 admin.site.register(Subject)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Mark, MarkAdmin)
 admin.site.register(MarksCoeff)
+admin.site.register(Parallel, ParallelAdmin)

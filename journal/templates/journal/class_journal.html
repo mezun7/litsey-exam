@@ -15,7 +15,7 @@
     <ul class="nav nav-sidebar">
     <li>Мои классы:</li>
         {% for class in classes %}
-            <li><a href="{% url 'journal:class_journal' class.id %}">{{ class.name}}</a> </li>
+            <li><a href="{% url 'journal:class_journal' class.id %}">{{ class.parallel }}{{ class.name}}</a> </li>
         {% endfor %}
     </ul>
     {% if class_teacher %}

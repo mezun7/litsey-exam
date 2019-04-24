@@ -1,6 +1,6 @@
 # coding=utf-8
 from django import forms
-from journal.models import Student, Class
+from journal.models import Student, Class2
 
 
 class LoginForm(forms.Form):
@@ -46,7 +46,7 @@ class StudentForm(forms.Form):
             initial=student.phone_number,
             label=u'Номер телефона ребенка')
 
-        self.fields['class'] = forms.ModelChoiceField(queryset=Class.objects.all(), initial=cls, label=u'Класс',
+        self.fields['class'] = forms.ModelChoiceField(queryset=Class2.objects.all(), initial=cls, label=u'Класс',
                                                       widget=forms.Select(attrs={'class': 'form-control'}))
         self.fields['medical'] = forms.BooleanField(initial=student.medical_card, required=False,
                                                     label=u'Медицинская карта')
