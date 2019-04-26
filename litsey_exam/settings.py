@@ -10,9 +10,12 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import platform
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 import dj_database_url
-#DATABASES['default'] = dj_database_url.config()
+
+# DATABASES['default'] = dj_database_url.config()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -26,7 +29,6 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -54,7 +56,6 @@ ROOT_URLCONF = 'litsey_exam.urls'
 
 WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
@@ -81,26 +82,28 @@ WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 #  }
 # }
 
-# DATABASES = {
-#  'default': {
-#  'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-#  'NAME': 'litsey', # Or path to database file if using sqlite3.
-#  'USER': 'postgres', # Not used with sqlite3.
-#  'PASSWORD': 'tarhush', # Not used with sqlite3.
-#  'HOST': 'it.in-education.ru', # Set to empty string for localhost. Not used with sqlite3.
-#  'PORT': '5432', # Set to empty string for default. Not used with sqlite3.
-#  }
-# }
 
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'db2.sqlite3'),
+if platform.system() != 'Linux':
+    PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(PROJECT_DIR, 'db2.sqlite3'),
+        }
     }
-}
-
-#DATABASES = { 'default' : dj_database_url.config()}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'journal',  # Or path to database file if using sqlite3.
+            'USER': 'journal',  # Not used with sqlite3.
+            'PASSWORD': 'journal',  # Not used with sqlite3.
+            'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '5432',  # Set to empty string for default. Not used with sqlite3.
+        }
+    }
+# DATABASES = { 'default' : dj_database_url.config()}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -114,7 +117,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
