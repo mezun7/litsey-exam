@@ -12,7 +12,15 @@
 
 {% endblock %}
 {% block main_menu %}
+    <ul class="nav nav-sidebar">
+            {% for para in parallels %}
+                   <li class="{% if parallel.id == para.id %}
+                    active
+                   {% endif %}"><a href="{% url 'journal:list' para.id %}">{{ para.name }}</a></li>
+            {% endfor %}
 
+
+              </ul>
 {% endblock %}
 {% block main_content_down %}
 <form method="post" class="form-horizontal">

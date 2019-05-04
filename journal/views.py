@@ -394,23 +394,28 @@ def get_overall(request):
 
 
 @login_required()
-def students_list(request):
+def students_list(request, parallel=1):
+
     context = {}
     lst = []
-    students = Student.objects.all().order_by('fname')
+    parallels = Parallel.objects.all()
+    students = Student.objects.filter(class_name__parallel=parallel).order_by('fname')
     for student in students:
         tmp = RegisterStruct(student.fname + " " + student.lname + " " + student.fathers_name, student.school,
                              student.phone_parent, student.pay_for_eating, student.class_name, student.id)
         lst.append(tmp)
     context['students'] = lst
+    context['parallels'] = parallels
+    context['parallel'] = parallel
 
     return render(request, 'journal/students.html', context)
 
 
 @login_required()
 def student_edit(request, stud_id):
-    student = Student.objects.get(id=stud_id)
+    parallels = Parallel.objects.all()
 
+    student = Student.objects.get(id=stud_id)
     try:
         if student.class_name is not None:
             cls = student.class_name
@@ -433,9 +438,10 @@ def student_edit(request, stud_id):
             student.phone_number = studentForm.cleaned_data['phone-child']
             student.pay_for_eating = studentForm.cleaned_data['money']
             student.save()
-            return HttpResponseRedirect(reverse('journal:list'))
+            return HttpResponseRedirect(reverse('journal:list', kwargs={'parallel': student.class_name.parallel.id}))
 
-    context = {'student': studentForm}
+    context = {'student': studentForm,
+               'parallels': parallels}
     return render(request, 'journal/edit.html', context)
 
 
