@@ -394,19 +394,17 @@ def get_overall(request):
 
 
 @login_required()
-def students_list(request, parallel=1):
+def students_list(request):
 
     context = {}
     lst = []
-    parallels = Parallel.objects.all()
-    students = Student.objects.filter(class_name__parallel=parallel).order_by('fname')
+    
+    students = Student.objects.all().order_by('fname')
     for student in students:
         tmp = RegisterStruct(student.fname + " " + student.lname + " " + student.fathers_name, student.school,
                              student.phone_parent, student.pay_for_eating, student.class_name, student.id)
         lst.append(tmp)
     context['students'] = lst
-    context['parallels'] = parallels
-    context['parallel'] = parallel
 
     return render(request, 'journal/students.html', context)
 
