@@ -5,7 +5,7 @@
  
 ;;directories to ignore
 .idea/
-
+media/
 *.pyc
 
 *.pyc
