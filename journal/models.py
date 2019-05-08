@@ -13,6 +13,9 @@ class Subject(models.Model):
         return self.name
 
 
+
+
+
 class Teacher(models.Model):
     user = models.ForeignKey(User, verbose_name=u'Пользователь')
     subject = models.ForeignKey(Subject, verbose_name=u'Предмет')
@@ -44,7 +47,7 @@ class Student(models.Model):
     fname = models.CharField(max_length=100, verbose_name=u'Фамилия')
     lname = models.CharField(max_length=100, verbose_name=u'Имя')
     fathers_name = models.CharField(max_length=100, verbose_name=u'Отчество')
-    school = models.CharField(max_length=100, verbose_name=u'Школа', blank=True)
+    school = models.CharField(max_length=500, verbose_name=u'Школа', blank=True)
     class_name = models.ForeignKey(Class2, verbose_name=u'Класс', blank=True, null=True)
     photo = models.ImageField(blank=True, upload_to='avatars', verbose_name=u'Фото')
     about = models.CharField(max_length=1000, blank=True)
@@ -75,3 +78,4 @@ class MarksCoeff(models.Model):
 
     def __unicode__(self):
         return self.subject.name + ": " + str(self.coeff)
+

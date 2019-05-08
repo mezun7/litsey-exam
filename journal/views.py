@@ -398,7 +398,7 @@ def students_list(request):
 
     context = {}
     lst = []
-    
+
     students = Student.objects.all().order_by('fname')
     for student in students:
         tmp = RegisterStruct(student.fname + " " + student.lname + " " + student.fathers_name, student.school,
