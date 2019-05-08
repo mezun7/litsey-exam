@@ -462,6 +462,8 @@ def upload_csv(request):
             student.fathers_name = row['Father']
             student.school = row['School']
             student.phone_parent = row['Phone']
+            #Student phone number
+            student.phone_number = row['PhoneC']
             lst.append(student)
         Student.objects.bulk_create(lst)
         return HttpResponseRedirect(reverse('journal:list'))
