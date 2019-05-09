@@ -436,7 +436,7 @@ def student_edit(request, stud_id):
             student.phone_number = studentForm.cleaned_data['phone-child']
             student.pay_for_eating = studentForm.cleaned_data['money']
             student.save()
-            return HttpResponseRedirect(reverse('journal:list', kwargs={'parallel': student.class_name.parallel.id}))
+            return HttpResponseRedirect(reverse('journal:list'))
 
     context = {'student': studentForm,
                'parallels': parallels}
