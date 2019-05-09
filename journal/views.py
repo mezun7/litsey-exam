@@ -401,7 +401,7 @@ def students_list(request):
     context = {}
     lst = []
 
-    students = Student.objects.all().order_by('fname')
+    students = Student.objects.filter(class_name__isnull=True).order_by('fname')
     for student in students:
         tmp = RegisterStruct(student.fname + " " + student.lname + " " + student.fathers_name, student.school,
                              student.phone_parent, student.pay_for_eating, student.class_name, student.id)
