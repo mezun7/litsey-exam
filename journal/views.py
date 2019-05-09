@@ -383,7 +383,7 @@ def get_overall(request):
         name = i.name
         sum = i.student_set.count()
         sum2 += int(sum)
-        lst.append(ClassStruct(name, sum))
+        lst.append(ClassStruct(i.parallel.name + name, sum))
     tmp = ClassStruct('Всего', sum2)
     lst.append(tmp)
     tmp2 = ClassStruct('Всего пригласили', Student.objects.all().count())
