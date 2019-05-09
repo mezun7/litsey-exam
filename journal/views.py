@@ -73,7 +73,9 @@ def home(request):
 @login_required
 def class_list(request, class_id):
     students = Student.objects.filter(class_name=class_id)
-    return render(request, 'journal/class_list.html', {'students': students})
+    class_name = Class2.objects.get(id=class_id)
+    class_name = class_name.parallel.name + class_name.name
+    return render(request, 'journal/class_list.html', {'students': students, 'name': class_name})
 
 
 @login_required
@@ -113,7 +115,7 @@ def class_journal(request, class_id):
     # class_teacher = Class.objects.filter(class1_teacher=teachers[0])
     # class_teacher = class_teacher[0]
     class_name = Class2.objects.get(pk=class_id)
-    class_name = class_name.name
+    class_name = class_name.parallel.name + class_name.name
     return render(request, 'journal/class_journal.html',
                   {'list': lst, 'maxx': range(maxx), 'form': form, 'id': class_id,
                    'classes': classes, 'name': class_name, 'current': class_id})
