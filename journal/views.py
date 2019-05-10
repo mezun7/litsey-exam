@@ -20,7 +20,7 @@ from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStr
 
 
 def get_class(teacher_id):
-    return Teacher.objects.filter(teacher=teacher_id)
+    return Class2.objects.filter(teacher=teacher_id)
 
 @login_required
 def increase(request):
