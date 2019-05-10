@@ -500,6 +500,6 @@ def mark_stats(request):
         stats.append(tmp)
     context = {
         'stats': stats,
-        'classes': class_list
+        'classes': classes_lst
     }
     return render(request, 'journal/stats.html', context)
