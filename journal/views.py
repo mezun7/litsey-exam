@@ -65,6 +65,8 @@ def home(request):
     context = {'TeacherName': request.user.first_name + " " + request.user.last_name}
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
+    return class_journal(request, teachers[0].class2_set.all()[0].id)
+
     classes = get_class(teachers[0])
     # print test2[0].id
     context['classes'] = classes
