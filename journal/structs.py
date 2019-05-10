@@ -146,3 +146,10 @@ class RegisterStruct:
         self.cls = cls
         self.sid = sid
 
+
+
+class MarkStatStruct:
+    def __init__(self, teacher, group, num):
+        self.teacher = teacher
+        self.group = group
+        self.num = num

@@ -1,0 +1,7 @@
+{% extends 'journal/base.html' %}
+{% block main_content_down %}
+    {% for stat in stats %}
+        <br>{{ stat.teacher }} /{{ stat.group.parallel }} /{{ stat.group }} /{{ stat.num }}
+    {% endfor %}
+
+{% endblock %}

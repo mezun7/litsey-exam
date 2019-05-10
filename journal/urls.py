@@ -21,6 +21,7 @@ urlpatterns = patterns('journal.views',
                        url(r'^edit/(?P<stud_id>\d+)/$', 'student_edit', name='edit'),
                        url(r'^upload/$', 'upload_csv', name='upload'),
                        url(r'^delete/(?P<mark_id>\d+)/$', 'delete_mark', name='delete-mark'),
-                       url(r'^print/$', 'print_raiting', name='print')
+                       url(r'^print/$', 'print_raiting', name='print'),
+                       url(r'^stat/$', 'mark_stats', name='mark_stats')
                        # url(r'^event/(?P<event_id>\d+)/edit/$', 'event_edit', name='event_edit')
                        )

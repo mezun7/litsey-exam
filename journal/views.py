@@ -15,7 +15,7 @@ from journal.forms import LoginForm, AddMarkForm, StudentForm, UploadForm
 from journal.models import Teacher, Class2, Student, Subject, Mark, MarksCoeff, Parallel
 from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStruct, StudentsRaitingStruct2, \
     SubjectInfo, \
-    MarkStruct, ClassStruct, RegisterStruct
+    MarkStruct, ClassStruct, RegisterStruct, MarkStatStruct
 
 
 def get_class(teacher_id):
@@ -473,3 +473,18 @@ def upload_csv(request):
         Student.objects.bulk_create(lst)
         return HttpResponseRedirect(reverse('journal:list'))
     return render(request, 'journal/upload.html', context)
+
+@login_required()
+def mark_stats(request):
+    teachers = Teacher.objects.all().order_by('user__last_name', 'user__first_name')
+    mark_stats = []
+    for teacher in teachers:
+        classes = teacher.class2_set.all().order_by('parallel', 'name')
+        for group in classes:
+            sum_marks = Mark.objects.filter(teacher=teacher, student__class_name=group).order_by('student').distinct('student').count()
+            mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
+    context = {
+        'stats': mark_stats
+    }
+    return render(request, 'journal/stats.html', context)
+
