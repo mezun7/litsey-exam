@@ -15,6 +15,20 @@
 
 {% endblock %}
 {% block main_content_down %}
+    <table>
+        <tr>
+            <th>ФИО</th>
+            {% for group in classes %}
+                <th>{{ group.parallel }} {{ group}}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+             {% for key, value in stats.items %}
+                 <td>{{ stat }}</td>
+             {% endfor %}
+
+        </tr>
+    </table>
     {% for stat in stats %}
         <br>{{ stat.teacher }} /{{ stat.group.parallel }} /{{ stat.group }} /{{ stat.num }}
     {% endfor %}

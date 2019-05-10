@@ -21,6 +21,7 @@ from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStr
 def get_class(teacher_id):
     return Class2.objects.filter(teacher=teacher_id).order_by('parallel', 'name')
 
+
 @login_required
 def increase(request):
     # logics
@@ -65,7 +66,7 @@ def home(request):
     context = {'TeacherName': request.user.first_name + " " + request.user.last_name}
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
-    return class_journal(request, teachers[0].class2_set.all().order_by('parallel','name')[0].id)
+    return class_journal(request, teachers[0].class2_set.all().order_by('parallel', 'name')[0].id)
 
     classes = get_class(teachers[0])
     # print test2[0].id
@@ -474,17 +475,30 @@ def upload_csv(request):
         return HttpResponseRedirect(reverse('journal:list'))
     return render(request, 'journal/upload.html', context)
 
+
 @login_required()
 def mark_stats(request):
     teachers = Teacher.objects.all().order_by('user__last_name', 'user__first_name')
     mark_stats = []
+    classes_lst = Class2.objects.all().order_by('parallel', 'name')
     for teacher in teachers:
+        tmp = {'teacher': teacher}
         classes = teacher.class2_set.all().order_by('parallel', 'name')
+        for group in class_list:
+            tmp[group] = '-'
+
         for group in classes:
-            sum_marks = Mark.objects.filter(teacher=teacher, student__class_name=group).order_by('student').distinct('student').count()
-            mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
+            sum_stud = group.student_set.all().count()
+            sum_marks = Mark.objects.filter(teacher=teacher, student__class_name=group).order_by('student').distinct(
+                'student').count()
+            if sum_stud != 0:
+                tmp[group] = sum_marks / sum_stud * 100
+            else:
+                tmp[group] = 0
+            #mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
+        mark_stats.append(tmp)
     context = {
-        'stats': mark_stats
+        'stats': mark_stats,
+        'classes': class_list
     }
     return render(request, 'journal/stats.html', context)
-
