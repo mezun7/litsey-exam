@@ -18,9 +18,9 @@ from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStr
     MarkStruct, ClassStruct, RegisterStruct
 
 
-
 def get_class(teacher_id):
-    return Class2.objects.filter(teacher=teacher_id)
+    return Class2.objects.filter(teacher=teacher_id).order_by('parallel', 'name')
+
 
 @login_required
 def increase(request):
@@ -233,7 +233,7 @@ def student_profile(request, student_id):
     parallel = student.class_name.parallel
     return render(request, 'journal/student.html',
                   {'student': student, 'classes': classes, 'list': list, 'maxx': range(maxx),
-                   'class_teacher': class_teacher, 'parallel':parallel})
+                   'class_teacher': class_teacher, 'parallel': parallel})
 
 
 @login_required
@@ -400,7 +400,6 @@ def get_overall(request):
 
 @login_required()
 def students_list(request):
-
     context = {}
     lst = []
 
@@ -467,7 +466,7 @@ def upload_csv(request):
             student.fathers_name = row['Father']
             student.school = row['School']
             student.phone_parent = row['Phone']
-            #Student phone number
+            # Student phone number
             student.phone_number = row['PhoneC']
             lst.append(student)
         Student.objects.bulk_create(lst)
