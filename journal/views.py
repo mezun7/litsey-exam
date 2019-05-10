@@ -497,7 +497,10 @@ def mark_stats(request):
             else:
                 tmp[group] = 0
             # mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
-        stats.append(tmp)
+        tmp2 = [tmp['teacher']]
+        for group in classes_lst:
+            tmp2.append(tmp[group])
+        stats.append(tmp2)
     context = {
         'stats': stats,
         'classes': classes_lst

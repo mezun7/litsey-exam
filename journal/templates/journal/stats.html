@@ -19,13 +19,13 @@
         <tr >
             <th>ФИО</th>
             {% for group in classes %}
-                <th>{{ group.parallel }} {{ group}}</th>
+                <th>{{ group.parallel }} {{ group.name}}</th>
             {% endfor %}
         </tr>
              {% for stat in stats %}
                  <tr>
-                 {% for el, val in stat.items %}
-                        <td>{{ val }}</td>
+                 {% for el in stat %}
+                        <td>{{ el }}</td>
                  {% endfor %}
                  </tr>
              {% endfor %}
