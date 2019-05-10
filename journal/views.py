@@ -18,6 +18,10 @@ from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStr
     MarkStruct, ClassStruct, RegisterStruct
 
 
+
+def get_class(teacher_id):
+    return Teacher.objects.filter(teacher=teacher_id)
+
 @login_required
 def increase(request):
     # logics
@@ -62,7 +66,7 @@ def home(request):
     context = {'TeacherName': request.user.first_name + " " + request.user.last_name}
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
-    classes = Class2.objects.filter(teacher=teachers[0])
+    classes = get_class(teachers[0])
     # print test2[0].id
     context['classes'] = classes
     class_teacher = Class2.objects.filter(class1_teacher=teachers[0])
@@ -109,9 +113,8 @@ def class_journal(request, class_id):
 
     teacher = Teacher.objects.all()
     teachers = teacher.filter(user=request.user)
-    classes = Class2.objects.filter(teacher=teachers[0])
+    classes = get_class(teachers[0])
     # print test2[0].id
-    classes = classes
     # class_teacher = Class.objects.filter(class1_teacher=teachers[0])
     # class_teacher = class_teacher[0]
     class_name = Class2.objects.get(pk=class_id)
