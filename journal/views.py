@@ -21,7 +21,6 @@ from journal.structs import StudentStruct, StudentInfoStruct, StudentsRaitingStr
 def get_class(teacher_id):
     return Class2.objects.filter(teacher=teacher_id).order_by('parallel', 'name')
 
-
 @login_required
 def increase(request):
     # logics
@@ -281,7 +280,7 @@ def raiting(request, parallel=1):
         subjects.append(SubjectInfo(subject, teachers))
 
     four = list[:4]
-    parallels = Parallel.objects.all()
+    parallels = Parallel.objects.all().order_by('name')
 
     return render(request, 'journal/raiting.html', {'list': list, 'subjects': subjects, 'four': four,
                                                     'parallels': parallels, 'parallel': parallel_link})
