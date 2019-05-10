@@ -1,4 +1,19 @@
 {% extends 'journal/base.html' %}
+
+{% block title %}
+Статистика по оценкам
+{% endblock %}
+
+{% block page_header %}
+Статистика по оценкам
+{% endblock %}
+{% block main_menu %}
+
+{% endblock %}
+
+{% block main_content_up %}
+
+{% endblock %}
 {% block main_content_down %}
     {% for stat in stats %}
         <br>{{ stat.teacher }} /{{ stat.group.parallel }} /{{ stat.group }} /{{ stat.num }}
