@@ -15,8 +15,8 @@
 
 {% endblock %}
 {% block main_content_down %}
-    <table>
-        <tr>
+    <table class="table table-responsive table-striped">
+        <tr >
             <th>ФИО</th>
             {% for group in classes %}
                 <th>{{ group.parallel }} {{ group}}</th>
