@@ -22,14 +22,14 @@
                 <th>{{ group.parallel }} {{ group}}</th>
             {% endfor %}
         </tr>
-        <tr>
              {% for stat in stats %}
+                 <tr>
                  {% for el, val in stat.items %}
                         <td>{{ val }}</td>
-                     {% endfor %}
+                 {% endfor %}
+                 </tr>
              {% endfor %}
 
-        </tr>
     </table>
     {% for stat in stats %}
         <br>{{ stat.teacher }} /{{ stat.group.parallel }} /{{ stat.group }} /{{ stat.num }}
