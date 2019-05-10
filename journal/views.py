@@ -479,12 +479,13 @@ def upload_csv(request):
 @login_required()
 def mark_stats(request):
     teachers = Teacher.objects.all().order_by('user__last_name', 'user__first_name')
-    mark_stats = []
+    stats = []
     classes_lst = Class2.objects.all().order_by('parallel', 'name')
     for teacher in teachers:
         tmp = {'teacher': teacher}
         classes = teacher.class2_set.all().order_by('parallel', 'name')
-        for group in class_list:
+        for group in classes_lst:
+            print(type(tmp))
             tmp[group] = '-'
 
         for group in classes:
@@ -495,10 +496,10 @@ def mark_stats(request):
                 tmp[group] = sum_marks / sum_stud * 100
             else:
                 tmp[group] = 0
-            #mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
-        mark_stats.append(tmp)
+            # mark_stats.append(MarkStatStruct(teacher, group, sum_marks))
+        stats.append(tmp)
     context = {
-        'stats': mark_stats,
+        'stats': stats,
         'classes': class_list
     }
     return render(request, 'journal/stats.html', context)
