@@ -23,8 +23,10 @@
             {% endfor %}
         </tr>
         <tr>
-             {% for key, value in stats.items %}
-                 <td>{{ stat }}</td>
+             {% for stat in stats %}
+                 {% for el, val in stat.items %}
+                        <td>{{ val }}</td>
+                     {% endfor %}
              {% endfor %}
 
         </tr>
