@@ -493,7 +493,7 @@ def mark_stats(request):
             sum_marks = Mark.objects.filter(teacher=teacher, student__class_name=group).order_by('student').distinct(
                 'student').count()
             if sum_stud != 0:
-                tmp[group] = sum_marks
+                tmp[group] = (sum_marks * 100) / sum_stud
             else:
                 tmp[group] = 0
             # mark_stats.append(MarkStatStruct(teacher, group, sum_marks))

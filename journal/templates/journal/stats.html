@@ -25,7 +25,7 @@
              {% for stat in stats %}
                  <tr>
                  {% for el in stat %}
-                        <td>{{ el }}</td>
+                        <td>{{ el|floatformat:2 }}</td>
                  {% endfor %}
                  </tr>
              {% endfor %}
