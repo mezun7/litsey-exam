@@ -26,9 +26,12 @@
                  <tr>
                  {% for el in stat %}
                         <td {% ifequal el 100 %}
-                            class="alert-warning"
+                            class="bg-success"
                         {% endifequal %}
-                        >{{ el}} % </td>
+                        >{{ el}} {% ifnotequal el - %}
+                            %
+                        {% endifnotequal %}
+                        </td>
                  {% endfor %}
                  </tr>
              {% endfor %}

@@ -476,7 +476,6 @@ def upload_csv(request):
     return render(request, 'journal/upload.html', context)
 
 
-@login_required()
 def mark_stats(request):
     teachers = Teacher.objects.all().order_by('user__last_name', 'user__first_name')
     stats = []
