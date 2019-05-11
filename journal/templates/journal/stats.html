@@ -29,7 +29,9 @@
                             class="bg-success"
                         {% endifequal %}
                         >{{ el}} {% ifnotequal el '-' %}
-                            %
+                            {% if el >= 0 %}
+                                %
+                            {% endif %}
                         {% endifnotequal %}
                         </td>
                  {% endfor %}
