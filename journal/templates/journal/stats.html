@@ -28,11 +28,7 @@
                         <td {% ifequal el 100 %}
                             class="bg-success"
                         {% endifequal %}
-                        >{{ el}} {% ifnotequal el '-' %}
-                            {% if el >= 0 %}
-                                %
-                            {% endif %}
-                        {% endifnotequal %}
+                        >{{ el}}
                         </td>
                  {% endfor %}
                  </tr>
