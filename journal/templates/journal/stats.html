@@ -25,7 +25,10 @@
              {% for stat in stats %}
                  <tr>
                  {% for el in stat %}
-                        <td>{{ el}}</td>
+                        <td {% ifequal el 100 %}
+                            class="alert-warning"
+                        {% endifequal %}
+                        >{{ el}} % </td>
                  {% endfor %}
                  </tr>
              {% endfor %}
