@@ -33,6 +33,7 @@ def increase(request):
                 mark.mark = i[1]
                 mark.save()
                 break
+    return render(request, 'journal/base.html')
 
 
 @login_required
