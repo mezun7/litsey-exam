@@ -243,7 +243,7 @@ def raiting(request, parallel=1):
     coeffs = {}
     coeffs_list = MarksCoeff.objects.all()
     parallel_link = Parallel.objects.get(pk=parallel)
-    tmp_subjects = parallel_link.subject.all()
+    tmp_subjects = parallel_link.subject.all().order_by('name')
     for coeff in coeffs_list:
         coeffs[coeff.subject] = coeff.coeff
     # print coeffs_list, "Yes"
