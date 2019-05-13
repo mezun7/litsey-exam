@@ -26,7 +26,8 @@ def get_class(teacher_id):
 def increase(request):
     # logics
     teacher = Teacher.objects.get(id=2)
-    if teacher.user.first_name == 'Артур':
+    print(teacher.user.first_name)
+    if teacher.user.username == 'ivanov':
         criteria = [[0, 0], [4, 3], [6, 4], [8, 5], [10, 6], [12, 7], [14, 8], [17, 9], [20, 10]]
         for mark in teacher.mark_set.all():
             for i in criteria:
