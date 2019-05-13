@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 # }
 
 
-if platform.system() != 'Linux':
+if platform.system() != 'Linux' and False:
     PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
     DATABASES = {
         'default': {

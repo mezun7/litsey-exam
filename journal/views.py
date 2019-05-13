@@ -25,27 +25,14 @@ def get_class(teacher_id):
 @login_required
 def increase(request):
     # logics
-    lst6 = [8, 2]
-    for el in lst6:
-        teacher = Teacher.objects.get(pk=el)
-        marks = Mark.objects.filter(teacher=teacher)
-        for mark in marks:
-            mark.mark *= 0.6
-            mark.save()
-    lst5 = [17, 16, 15, 14, 13, 12, 11, 10, 9]
-    for el in lst5:
-        teacher = Teacher.objects.get(pk=el)
-        marks = Mark.objects.filter(teacher=teacher)
-        for mark in marks:
-            mark.mark *= 0.5
-            mark.save()
-    lst3 = [4]
-    for el in lst3:
-        teacher = Teacher.objects.get(pk=el)
-        marks = Mark.objects.filter(teacher=teacher)
-        for mark in marks:
-            mark.mark *= 0.3
-            mark.save()
+    teacher = Teacher.objects.get(id=2)
+    criteria = [[0, 0], [4, 3], [6, 4], [8, 5], [10, 6], [12, 7], [14, 8], [17, 9], [20, 10]]
+    for mark in teacher.mark_set.all():
+        for i in criteria:
+            if mark.mark <= i[0]:
+                mark.mark = i[1]
+                mark.save()
+                break
 
 
 @login_required
