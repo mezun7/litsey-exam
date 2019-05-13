@@ -117,12 +117,12 @@ class StudentsRaitingStruct2:
         return self.student
 
 class SubjectInfo:
-    def __init__(self, subject, teachers_id):
+    def __init__(self, subject, teachers_id, parallel):
         self.subject = subject.name
         sum = 0.0
         iter = 0
         for tid in teachers_id:
-            marks = Mark.objects.filter(teacher=tid)
+            marks = Mark.objects.filter(teacher=tid, student__class_name__parallel=parallel)
             for mark in marks:
                 sum += mark.mark
                 iter += 1

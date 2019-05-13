@@ -270,7 +270,7 @@ def raiting(request, parallel=1):
     # print tmp_subjects
     for subject in tmp_subjects:
         teachers = Teacher.objects.filter(subject=subject, class2__parallel=parallel)
-        subjects.append(SubjectInfo(subject, teachers))
+        subjects.append(SubjectInfo(subject, teachers, parallel))
 
     four = list[:4]
     parallels = Parallel.objects.all().order_by('name')
