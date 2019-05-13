@@ -26,13 +26,14 @@ def get_class(teacher_id):
 def increase(request):
     # logics
     teacher = Teacher.objects.get(id=2)
-    criteria = [[0, 0], [4, 3], [6, 4], [8, 5], [10, 6], [12, 7], [14, 8], [17, 9], [20, 10]]
-    for mark in teacher.mark_set.all():
-        for i in criteria:
-            if mark.mark <= i[0]:
-                mark.mark = i[1]
-                mark.save()
-                break
+    if teacher.user.first_name == 'Артур':
+        criteria = [[0, 0], [4, 3], [6, 4], [8, 5], [10, 6], [12, 7], [14, 8], [17, 9], [20, 10]]
+        for mark in teacher.mark_set.all():
+            for i in criteria:
+                if mark.mark <= i[0]:
+                    mark.mark = i[1]
+                    mark.save()
+                    break
     return render(request, 'journal/base.html')
 
 
