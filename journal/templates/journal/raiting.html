@@ -28,7 +28,7 @@
             {% for para in parallels %}
                    <li class="{% if parallel.id == para.id %}
                     active
-                   {% endif %}"><a href="{% url 'journal:raiting' para.id %}">{{ para.name }}</a></li>
+                   {% endif %}"><a href="{% url 'journal:raiting' para.id %}">{{ para.name }} классы</a></li>
             {% endfor %}
 
 
