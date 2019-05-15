@@ -127,7 +127,7 @@ class SubjectInfo:
                 sum += mark.mark
                 iter += 1
         if iter != 0:
-            self.avg = sum / iter * subject.markscoeff_set.all()[0].coeff
+            self.avg = sum / iter
         else:
             self.avg = 0
 
