@@ -82,6 +82,10 @@ WSGI_APPLICATION = 'litsey_exam.wsgi.application'
 #  }
 # }
 
+db_host = ''
+if platform.system() != 'Linux':
+    db_host = '192.168.2.15'
+
 
 if platform.system() != 'Linux' and False:
     PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -99,7 +103,7 @@ else:
             'NAME': 'journal',  # Or path to database file if using sqlite3.
             'USER': 'journal',  # Not used with sqlite3.
             'PASSWORD': 'journal',  # Not used with sqlite3.
-            'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
+            'HOST': db_host,  # Set to empty string for localhost. Not used with sqlite3.
             'PORT': '5432',  # Set to empty string for default. Not used with sqlite3.
         }
     }
