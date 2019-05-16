@@ -55,7 +55,7 @@
                 <tr>
                   <td class="text-center">{{ i.num }}</td>
                   <td class="text-center"><a href="/media/{{i.student.photo}}" class="lightbox"><img src="/media/{{ i.student.photo }}" class="img-thumbnail" width="100" height="100"></a></td>
-                  <td class="text-center"><font size="4"><a href="{% url 'journal:student' i.student.id %}">{{ i.student}}</a></font></td>
+                  <td class="text-center"><font size="4"><a href="{% url 'journal:student' i.student.id %}?rank={{i.num}}">{{ i.student}}</a></font></td>
                   {% for mark in i.marks %}
                     <td class="text-center"><font size="4">{{ mark|floatformat:2}}</font></td>
                   {% endfor %}

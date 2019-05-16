@@ -1,4 +1,4 @@
-from journal.models import Subject, Mark, Teacher
+from journal.models import Subject, Mark, Teacher, MarksCoeff
 
 __author__ = 'shuhrat'
 
@@ -35,7 +35,8 @@ class StudentInfoStruct:
         self.subject = subject
         self.teacher = teacher
         self.marks = marks
-        print marks
+        self.max_score = self.subject.max_score * MarksCoeff.objects.get(subject=self.subject).coeff
+        print self.max_score
         avg = 0.0
         for i in marks:
             avg = avg + i.mark
@@ -127,7 +128,7 @@ class SubjectInfo:
                 sum += mark.mark
                 iter += 1
         if iter != 0:
-            self.avg = sum / iter
+            self.avg = sum / iter * MarksCoeff.objects.get(subject=subject).coeff
         else:
             self.avg = 0
 

@@ -9,6 +9,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Subject(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название предмета')
     max_score = models.FloatField(verbose_name=u'Максимальный балл', blank=True, null=True, default=0)
+    priority = models.IntegerField(verbose_name=u'Приоритет сортировки', blank=True, null=True, default=0)
 
 
     def __unicode__(self):

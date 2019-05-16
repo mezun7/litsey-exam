@@ -8,6 +8,11 @@
 {% block page_header %}
     {{ student }}
 {% endblock %}
+{% block search %}
+    <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Поиск... {{ rank }}">
+          </form>
+{% endblock %}
 
 {% block main_menu%}
     <ul class="nav nav-sidebar">
@@ -35,6 +40,7 @@
                                         <th></th>
                                     {% endfor %}
                                      <th class="text-center">AVG</th>
+                                    <th class="text-center">МАКС БАЛЛ</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -53,6 +59,7 @@
                                     <td></td>
                                   {% endfor %}
                                   <td><font size="4"><b>{{ i.avg|floatformat:2 }}</b></font></td>
+                                  <td><font size="4">{{ i.max_score }}</font> </td>
                                 </tr>
                                 {% endfor %}
                               </tbody>

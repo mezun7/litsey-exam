@@ -189,6 +189,7 @@ def student_profile(request, student_id):
     teacher = Teacher.objects.all()
     classes = Class2.objects.all()
     marks = student.mark_set.all()
+    rank = request.GET['rank']
     coeffs = {}
     coeffs_list = MarksCoeff.objects.all()
     for coeff in coeffs_list:
@@ -221,11 +222,11 @@ def student_profile(request, student_id):
     for i in list:
         i.delta(maxx)
     # print list
-    list.sort(key=lambda x: x.avg, reverse=True)
+    list.sort(key=lambda x: x.subject.priority, reverse=False)
     parallel = student.class_name.parallel
     return render(request, 'journal/student.html',
                   {'student': student, 'classes': classes, 'list': list, 'maxx': range(maxx),
-                   'class_teacher': class_teacher, 'parallel': parallel})
+                   'class_teacher': class_teacher, 'parallel': parallel, 'rank': rank})
 
 
 @login_required
